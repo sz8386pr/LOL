@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.company.LolGUI">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="9" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="15" left="15" bottom="15" right="15"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="655"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="a4571" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Champion Name"/>
+        </properties>
+      </component>
+      <component id="afaa8" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Level"/>
+        </properties>
+      </component>
+      <component id="1b6e" class="javax.swing.JComboBox" binding="Level">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model/>
+        </properties>
+      </component>
+      <component id="199ad" class="javax.swing.JComboBox" binding="ChampionName">
+        <constraints>
+          <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model/>
+        </properties>
+      </component>
+      <component id="f39f0" class="javax.swing.JLabel" binding="A1">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Ability1"/>
+        </properties>
+      </component>
+      <component id="30650" class="javax.swing.JComboBox" binding="Ability1">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model/>
+        </properties>
+      </component>
+      <component id="812a9" class="javax.swing.JLabel" binding="A2">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Ability2"/>
+        </properties>
+      </component>
+      <component id="8262b" class="javax.swing.JComboBox" binding="Ability2">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model/>
+        </properties>
+      </component>
+      <component id="17964" class="javax.swing.JLabel" binding="A3">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Ability3"/>
+        </properties>
+      </component>
+      <component id="b7f38" class="javax.swing.JComboBox" binding="Ability3">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model/>
+        </properties>
+      </component>
+      <component id="87610" class="javax.swing.JLabel" binding="A4">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Ability4"/>
+        </properties>
+      </component>
+      <component id="21b99" class="javax.swing.JTextPane" binding="ChampionInfo">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="&#9;Champion Name: &#9;Aatrox&#10;&#9;Health: &#9;1090&#10;&#9;Attack Damage: &#9;87&#10;&#9;Attack Speed: &#9;0.777&#10;&#9;Movement Speed: 345&#10;&#9;Armor: &#9;&#9;56&#10;&#9;Magic Resist:&#9;40&#10;&#9;Ability Power: &#9;0&#10;&#10;&#9;Abilities&#10;&#9;   Name&#9;&#9;&#9;Cost&#9;&#9;Ability&#10;&#9;1. Dark Flight: &#9;no cost&#9;&#9;10 + (96) Physical Damage&#10;&#9;2. Blood Thirst/&#9;no cost&#9;&#9;Restores 60 + (1% Missing Health)&#10;&#9;   Blood Price&#9;&#9;no cost&#9;&#9;120 + (14) Physical Damage&#10;&#9;3. Blades of Torment&#9;30 Health&#9;75 + (13) Physical Damage&#10;&#9;4. Massacre&#9;&#9;no cost&#9;&#9;200(0) Magic Damage&#9;"/>
+        </properties>
+      </component>
+      <component id="c3cf" class="javax.swing.JComboBox" binding="Ability4">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model/>
+        </properties>
+      </component>
+      <component id="9388b" class="javax.swing.JButton" binding="generateButton" default-binding="true">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Generate!"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
