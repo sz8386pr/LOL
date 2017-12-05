@@ -1,5 +1,7 @@
-//create lol DB
+
+//create user 'user'@'localhost' identified by 'itecitec';
 //grant select, insert, update, delete, create, drop, references on lol.* to 'user'@'localhost';
+
 package com.company;
 
 import static com.company.LolDB.*;
