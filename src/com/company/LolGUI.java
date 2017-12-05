@@ -24,6 +24,8 @@ public class LolGUI extends JFrame {
     private JLabel A3;
     private JLabel A4;
 
+    private static final String SELECT_CHAMPION = "Select A Champion";
+
     protected LolGUI(){
         setTitle("League of Legend Champion Info Sheet");
         setContentPane(mainPanel);
@@ -37,6 +39,11 @@ public class LolGUI extends JFrame {
         ChampionName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Sets default value for the ChampionName JComboBox to SELECT_CHAMPION and removes it once user selects a champion and title is no longer needed.
+                if (ChampionName.getItemAt(0).equals(SELECT_CHAMPION)) {
+                    ChampionName.removeItemAt(0);
+                }
+
                 String championName = (String)ChampionName.getSelectedItem();
                 setAbilityName(championName);
             }
@@ -48,7 +55,6 @@ public class LolGUI extends JFrame {
         loadChampions();
         championLevels();
         abilityLevels();
-        setAbilityName("Aatrox"); //Work in testing purposes only. Method should work with the action listener with ChampionName JComboBox
     }
 
     private void loadChampions() {
@@ -59,6 +65,8 @@ public class LolGUI extends JFrame {
             PreparedStatement champions = conn.prepareStatement("SELECT name FROM champions");
 
             ResultSet rs = champions.executeQuery();
+
+            ChampionName.addItem(SELECT_CHAMPION);
 
             while (rs.next()) {
                 String s = rs.getString("name");
