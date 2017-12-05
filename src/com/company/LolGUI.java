@@ -36,6 +36,7 @@ public class LolGUI extends JFrame {
 
         setup();
 
+        //When user select a champion from the ChampionName JComboBox, ability names on GUI will change accordingly.
         ChampionName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,12 +52,14 @@ public class LolGUI extends JFrame {
 
     }
 
+    //Initial setup phase
     private void setup(){
         loadChampions();
         championLevels();
         abilityLevels();
     }
 
+    //
     private void loadChampions() {
 
         try (Connection conn = DriverManager.getConnection(db_url, user, password);
