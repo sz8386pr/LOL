@@ -59,7 +59,7 @@ public class LolGUI extends JFrame {
         abilityLevels();
     }
 
-    //
+    //Load champions from champions table
     private void loadChampions() {
 
         try (Connection conn = DriverManager.getConnection(db_url, user, password);
