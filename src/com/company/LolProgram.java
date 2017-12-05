@@ -1,4 +1,5 @@
-
+//need to run these codes on MYSQL to create the lol schema and user to utilize the db
+//create database lol;
 //create user 'user'@'localhost' identified by 'itecitec';
 //grant select, insert, update, delete, create, drop, references on lol.* to 'user'@'localhost';
 
