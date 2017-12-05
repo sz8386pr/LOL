@@ -1,6 +1,8 @@
 package com.company;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
 import static com.company.LolDB.*;
@@ -27,10 +29,18 @@ public class LolGUI extends JFrame {
         setContentPane(mainPanel);
         pack();
         setVisible(true);
-        setSize(400, 300);
+        setSize(600, 600);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setup();
+
+        ChampionName.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String championName = (String)ChampionName.getSelectedItem();
+                setAbilityName(championName);
+            }
+        });
 
     }
 
@@ -73,16 +83,17 @@ public class LolGUI extends JFrame {
     private void abilityLevels(){
         //TODO: load the champion ability data and add max number of skills accordingly.
 
-        for (int x = 1 ; x <= 5 ; x++ ) {
+        for (int x = 0 ; x <= 5 ; x++ ) {
             Ability1.addItem(x);
             Ability2.addItem(x);
             Ability3.addItem(x);
         }
-        for (int x = 1 ; x <= 3 ; x++ ) {
+        for (int x = 0 ; x <= 3 ; x++ ) {
             Ability4.addItem(x);
         }
     }
 
+    // Retrieves champion's ability names for the GUI interface
     private void setAbilityName(String championName){
         try (Connection conn = DriverManager.getConnection(db_url, user, password);
              Statement statement = conn.createStatement()) {
@@ -91,6 +102,7 @@ public class LolGUI extends JFrame {
             champions.setString(1, championName);
             ResultSet rs = champions.executeQuery();
 
+            //getString from the rs and apply to the String Array abilities.
             String[] abilities = new String[4];
             int i = 0;
 
@@ -99,6 +111,7 @@ public class LolGUI extends JFrame {
                 i++;
             }
 
+            //Set texts for each ability accordingly
             A1.setText(abilities[0]);
             A2.setText(abilities[1]);
             A3.setText(abilities[2]);
