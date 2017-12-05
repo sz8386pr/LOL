@@ -25,7 +25,7 @@ public class LolGUI extends JFrame {
     private JLabel A4;
 
     protected LolGUI(){
-        setTitle("Rubik Cube Solver Times");
+        setTitle("League of Legend Champion Info Sheet");
         setContentPane(mainPanel);
         pack();
         setVisible(true);
