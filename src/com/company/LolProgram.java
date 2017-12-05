@@ -1,3 +1,4 @@
+//create lol DB
 //grant select, insert, update, delete, create, drop, references on lol.* to 'user'@'localhost';
 package com.company;
 
