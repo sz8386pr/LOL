@@ -60,23 +60,23 @@ public class LolDB {
                         "('4', 'Alistar', '613.36', '106', '61.1116', '3.62', '0.625', '1.02125', '330', '44', '3.5', '32.1', '1.25');";
 
         String insertAbilities =
-                "INSERT IGNORE INTO abilities (ability_id, champion_id, ability_name, ability_ratio, ability_ratio_type, ability_type, lv1, lv2, lv3, lv4, lv5, lv6) VALUES" +
-                        "('1', '1', 'Dark Flight', '1.1', 'Total AD', 'Physical', '10', '35', '60', '95', '120', NULL),\n" +
-                        "('2', '1', 'Blood Price', '0.75', 'Bonus AD', 'Physical', '50', '85', '120', '155', '190', NULL),\n" +
-                        "('3', '1', 'Blades of Torment', '0.7', 'Bonus AD', 'Physical', '75', '115', '155', '195', '235', NULL),\n" +
-                        "('4', '1', 'Massacre', '1', 'AP', 'Magic', '200', '300', '400', NULL, NULL, NULL),\n" +
-                        "('5', '2', 'Orb of Deception', '0.35', 'AP', 'Magic', '40', '65', '90', '115', '140', NULL),\n" +
-                        "('6', '2', 'Fox-Fire', '0.3', 'AP', 'Magic', '40', '65', '90', '115', '140', NULL),\n" +
-                        "('7', '2', 'Charm', '0.6', 'AP', 'Magic', '60', '95', '130', '165', '200', NULL),\n" +
-                        "('8', '2', 'Spirit Rush', '0.25', 'AP', 'Magic', '70', '110', '150', NULL, NULL, NULL),\n" +
-                        "('9', '3', 'Mark of the Assassin', '0.9', 'AP', 'Magic', '80', '125', '170', '215', '260', NULL),\n" +
-                        "('10', '3', 'Twilight Shroud', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),\n" +
-                        "('11', '3', 'Crescent Slash', '0.8', 'Bonus AD', 'Physical', '70', '100', '130', '160', '190', NULL),\n" +
-                        "('12', '3', 'Shadow Dance', '0.35', 'AP', 'Magic', '50', '100', '150', NULL, NULL, NULL),\n" +
-                        "('13', '4', 'Pulverize', '0.5', 'AP', 'Magic', '60', '105', '150', '195', '240', NULL),\n" +
-                        "('14', '4', 'Headbutt', '0.7', 'AP', 'Magic', '55', '110', '165', '220', '275', NULL),\n" +
-                        "('15', '4', 'Trample', '0.04', 'AP', 'Magic', '10', '12.5', '15', '17.5', '20', NULL),\n" +
-                        "('16', '4', 'Unbreakable Will', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
+                "INSERT IGNORE INTO abilities (ability_id, champion_id, ability_name, ability_ratio, ability_ratio_type, ability_type, lv1, lv2, lv3, lv4, lv5) VALUES" +
+                        "('1', '1', 'Dark Flight', '1.1', 'Total AD', 'Physical', '10', '35', '60', '95', '120'),\n" +
+                        "('2', '1', 'Blood Price', '0.75', 'Bonus AD', 'Physical', '50', '85', '120', '155', '190'),\n" +
+                        "('3', '1', 'Blades of Torment', '0.7', 'Bonus AD', 'Physical', '75', '115', '155', '195', '235'),\n" +
+                        "('4', '1', 'Massacre', '1', 'AP', 'Magic', '200', '300', '400', NULL, NULL),\n" +
+                        "('5', '2', 'Orb of Deception', '0.35', 'AP', 'Magic', '40', '65', '90', '115', '140'),\n" +
+                        "('6', '2', 'Fox-Fire', '0.3', 'AP', 'Magic', '40', '65', '90', '115', '140'),\n" +
+                        "('7', '2', 'Charm', '0.6', 'AP', 'Magic', '60', '95', '130', '165', '200'),\n" +
+                        "('8', '2', 'Spirit Rush', '0.25', 'AP', 'Magic', '70', '110', '150', NULL, NULL),\n" +
+                        "('9', '3', 'Mark of the Assassin', '0.9', 'AP', 'Magic', '80', '125', '170', '215', '260'),\n" +
+                        "('10', '3', 'Twilight Shroud', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL),\n" +
+                        "('11', '3', 'Crescent Slash', '0.8', 'Bonus AD', 'Physical', '70', '100', '130', '160', '190'),\n" +
+                        "('12', '3', 'Shadow Dance', '0.35', 'AP', 'Magic', '50', '100', '150', NULL, NULL),\n" +
+                        "('13', '4', 'Pulverize', '0.5', 'AP', 'Magic', '60', '105', '150', '195', '240'),\n" +
+                        "('14', '4', 'Headbutt', '0.7', 'AP', 'Magic', '55', '110', '165', '220', '275'),\n" +
+                        "('15', '4', 'Trample', '0.04', 'AP', 'Magic', '10', '12.5', '15', '17.5', '20'),\n" +
+                        "('16', '4', 'Unbreakable Will', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
 
 
         try (Connection conn = DriverManager.getConnection(db_url, user, password);

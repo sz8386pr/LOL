@@ -12,7 +12,6 @@ public class LolProgram {
     public static void main(String[] args)  throws SQLException{
         DBSetup();
         LolGUI gui = new LolGUI();
-
     }
 
 

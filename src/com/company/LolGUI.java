@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.ArrayList;
 
 import static com.company.LolDB.*;
 
@@ -26,7 +27,11 @@ public class LolGUI extends JFrame {
 
     private static final String SELECT_CHAMPION = "Select A Champion";
     private Champion champion;
-    private ChampionInfoSheet championInfoSheet = new ChampionInfoSheet();
+    private Abilities ability;
+    private ArrayList<Abilities> abilitiesList;
+    private ArrayList<String> abilityNameList;
+    private ChampionInfoSheet championInfoSheet;
+
 
     protected LolGUI(){
         setTitle("League of Legend Champion Info Sheet");
@@ -103,9 +108,12 @@ public class LolGUI extends JFrame {
             //getString from the rs and apply to the String Array abilities.
             String[] abilities = new String[4];
             int i = 0;
+            abilityNameList = new ArrayList<>();
 
+            //get the ability names from the table and add them to abilityNameList ArrayList
             while (rs.next()) {
                 abilities[i] = rs.getString("ability_name");
+                abilityNameList.add(abilities[i]);
                 i++;
             }
 
@@ -171,13 +179,56 @@ public class LolGUI extends JFrame {
 
         setAbilityName(championName);
         createChampion(championName);
+
+        //Create 4 Ability class objects and add to the abilitiesList ArrayList
+        abilitiesList = new ArrayList<>();
+        for (int i = 0; abilityNameList.size() > i; i++) {
+            createAbility(abilityNameList.get(i));
+            abilitiesList.add(i, ability);
+        }
+
+    }
+
+    private void createAbility(String abilityName) {
+        try (Connection conn = DriverManager.getConnection(db_url, user, password);
+             Statement statement = conn.createStatement()) {
+
+            PreparedStatement abilities = conn.prepareStatement("SELECT * FROM abilities WHERE ability_name = ?");
+            abilities.setString(1, abilityName);
+            ResultSet rs = abilities.executeQuery();
+
+            //getString from the rs and apply to the String Array abilities.
+            while (rs.next()) {
+                String ability_name = rs.getString("ability_name");
+                double ability_ratio = rs.getDouble("ability_ratio");
+                String ability_ratio_type = rs.getString("ability_ratio_type");
+                String ability_type = rs.getString("ability_type");
+                double lv1 = rs.getDouble("lv1");
+                double lv2 = rs.getDouble("lv2");
+                double lv3 = rs.getDouble("lv3");
+                double lv4 = rs.getDouble("lv4");
+                double lv5 = rs.getDouble("lv5");
+
+                ability = new Abilities(ability_name, ability_ratio, ability_ratio_type, ability_type, lv1, lv2, lv3, lv4, lv5);
+            }
+            statement.close();
+            conn.close();
+        }
+        catch (SQLException sqle) {
+            sqle.printStackTrace();
+            System.exit(-1);
+        }
     }
 
     private void generateInfoSheet(){
-        ChampionInfoTextPane.setText(championInfoSheet.generateInfoSheet(champion));
+        championInfoSheet = new ChampionInfoSheet();
+        ChampionInfoTextPane.setText(championInfoSheet.generateInfoSheet(champion, abilitiesList));
     }
 
+
+
     private void addActionListeners(){
+
         //When user select a champion from the ChampionName JComboBox, ability names on GUI will change accordingly.
         ChampionName.addActionListener(new ActionListener() {
             @Override
@@ -225,6 +276,42 @@ public class LolGUI extends JFrame {
                 }
             }
         });
+
+        //Set the level value to the appropriate Abilities class object in the abilitiesList ArrayList
+        Ability1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (abilitiesList != null) {
+                    abilitiesList.get(0).setLevel((int) Ability1.getSelectedItem());
+                    //System.out.println(abilitiesList.get(0).getLevel());
+                }
+            }
+        });
+        Ability2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (abilitiesList != null) {
+                    abilitiesList.get(1).setLevel((int) Ability2.getSelectedItem());
+                }
+            }
+        });
+        Ability3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (abilitiesList != null) {
+                    abilitiesList.get(2).setLevel((int) Ability3.getSelectedItem());
+                }
+            }
+        });
+        Ability4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (abilitiesList != null) {
+                    abilitiesList.get(3).setLevel((int) Ability4.getSelectedItem());
+                }
+            }
+        });
+
     }
 
 

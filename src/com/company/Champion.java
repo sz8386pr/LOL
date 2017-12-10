@@ -15,6 +15,7 @@ public class Champion {
     private double magic_resist;
     private double mr_level;
     private int level;
+    private double ability_power = 0;
 
     public Champion(String championName, double health, double he_level, double attack_damage, double ad_level, double attack_speed, double as_level,
                     double movement_speed, double armor, double ar_level, double magic_resist, double mr_level, int level) {
@@ -34,10 +35,7 @@ public class Champion {
         this.level = level;
     }
 
-    String getChampionName() {
-        return championName;
-    }
-
+    String getChampionName() { return championName; }
     void setChampionName(String championName) {
         this.championName = championName;
     }
@@ -45,15 +43,11 @@ public class Champion {
     double getHealth() {
         return health;
     }
-
     void setHealth(double health) {
         this.health = health;
     }
 
-    double getHe_level() {
-        return he_level;
-    }
-
+    double getHe_level() { return he_level; }
     void setHe_level(double he_level) {
         this.he_level = he_level;
     }
@@ -61,7 +55,6 @@ public class Champion {
     double getAttack_damage() {
         return attack_damage;
     }
-
     void setAttack_damage(double attack_damage) {
         this.attack_damage = attack_damage;
     }
@@ -69,7 +62,6 @@ public class Champion {
     double getAd_level() {
         return ad_level;
     }
-
     void setAd_level(double ad_level) {
         this.ad_level = ad_level;
     }
@@ -77,7 +69,6 @@ public class Champion {
     double getAttack_speed() {
         return attack_speed;
     }
-
     void setAttack_speed(double attack_speed) {
         this.attack_speed = attack_speed;
     }
@@ -85,7 +76,6 @@ public class Champion {
     double getAs_level() {
         return as_level;
     }
-
     void setAs_level(double as_level) {
         this.as_level = as_level;
     }
@@ -93,7 +83,6 @@ public class Champion {
     double getMovement_speed() {
         return movement_speed;
     }
-
     void setMovement_speed(double movement_speed) {
         this.movement_speed = movement_speed;
     }
@@ -101,7 +90,6 @@ public class Champion {
     double getArmor() {
         return armor;
     }
-
     void setArmor(double armor) {
         this.armor = armor;
     }
@@ -109,7 +97,6 @@ public class Champion {
     double getAr_level() {
         return ar_level;
     }
-
     void setAr_level(double ar_level) {
         this.ar_level = ar_level;
     }
@@ -117,7 +104,6 @@ public class Champion {
     double getMagic_resist() {
         return magic_resist;
     }
-
     void setMagic_resist(double magic_resist) {
         this.magic_resist = magic_resist;
     }
@@ -125,7 +111,6 @@ public class Champion {
     double getMr_level() {
         return mr_level;
     }
-
     void setMr_level(double mr_level) {
         this.mr_level = mr_level;
     }
@@ -133,9 +118,11 @@ public class Champion {
     int getLevel() {
         return level;
     }
-
     void setLevel(int level) {
         this.level = level;
     }
 
+    double getAbility_power() { return ability_power; }
+
+    void setAbility_power(double ability_power) { this.ability_power = ability_power; }
 }
