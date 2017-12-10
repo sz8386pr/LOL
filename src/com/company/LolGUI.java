@@ -16,16 +16,17 @@ public class LolGUI extends JFrame {
     private JComboBox<Integer> Ability2;
     private JComboBox<Integer> Ability3;
     private JComboBox<Integer> Ability4;
-    private JTextArea ChampionInfo;
     private JButton generateButton;
 
     private JLabel A1;
     private JLabel A2;
     private JLabel A3;
     private JLabel A4;
+    private JTextPane ChampionInfoTextPane;
 
     private static final String SELECT_CHAMPION = "Select A Champion";
-    private Champion infoSheetChampion;
+    private Champion champion;
+    private ChampionInfoSheet championInfoSheet = new ChampionInfoSheet();
 
     protected LolGUI(){
         setTitle("League of Legend Champion Info Sheet");
@@ -41,8 +42,7 @@ public class LolGUI extends JFrame {
     //Initial setup phase
     private void setup(){
         loadChampions();
-        championLevels();
-        abilityLevels();
+
         addActionListeners();
     }
 
@@ -74,7 +74,7 @@ public class LolGUI extends JFrame {
 
     private void championLevels() {
         for (int x = 1 ; x <= 18 ; x++ ) {
-                Level.addItem(x);
+            Level.addItem(x);
         }
     }
 
@@ -133,21 +133,23 @@ public class LolGUI extends JFrame {
             ResultSet rs = champions.executeQuery();
 
             //getString from the rs and apply to the String Array abilities.
-            String name = rs.getString("name");
-            double health = rs.getDouble("health");
-            double he_level = rs.getDouble("he_level");
-            double attack_damage = rs.getDouble("attack_damage");
-            double ad_level = rs.getDouble("ad_level");
-            double attack_speed = rs.getDouble("attack_speed");
-            double as_level = rs.getDouble("as_level");
-            double movement_speed = rs.getDouble("movement_speed");
-            double armor = rs.getDouble("armor");
-            double ar_level = rs.getDouble("ar_level");
-            double magic_resist = rs.getDouble("magic_resist");
-            double mr_level = rs.getDouble("mr_level");
+            while (rs.next()) {
+                String name = rs.getString("name");
+                double health = rs.getDouble("health");
+                double he_level = rs.getDouble("he_level");
+                double attack_damage = rs.getDouble("attack_damage");
+                double ad_level = rs.getDouble("ad_level");
+                double attack_speed = rs.getDouble("attack_speed");
+                double as_level = rs.getDouble("as_level");
+                double movement_speed = rs.getDouble("movement_speed");
+                double armor = rs.getDouble("armor");
+                double ar_level = rs.getDouble("ar_level");
+                double magic_resist = rs.getDouble("magic_resist");
+                double mr_level = rs.getDouble("mr_level");
+                int level = (int)Level.getSelectedItem();
 
-            Champion infoSheetChampion = new Champion(name, health, he_level, attack_damage, ad_level, attack_speed, as_level, movement_speed, armor, ar_level, magic_resist, mr_level);
-
+                champion = new Champion(name, health, he_level, attack_damage, ad_level, attack_speed, as_level, movement_speed, armor, ar_level, magic_resist, mr_level, level);
+            }
             statement.close();
             conn.close();
         }
@@ -158,8 +160,21 @@ public class LolGUI extends JFrame {
     }
 
     private void setChampion(String championName) {
-       setAbilityName(championName);
-       createChampion(championName);
+
+        //Add champion and skill levels once user selects a champion from the Champion Name JComboBox
+        if (Level.getItemCount() == 0) {
+            championLevels();
+        }
+        if (Ability1.getItemCount() == 0) {
+            abilityLevels();
+        }
+
+        setAbilityName(championName);
+        createChampion(championName);
+    }
+
+    private void generateInfoSheet(){
+        ChampionInfoTextPane.setText(championInfoSheet.generateInfoSheet(champion));
     }
 
     private void addActionListeners(){
@@ -182,26 +197,35 @@ public class LolGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int championLevel = Integer.parseInt(Level.getSelectedItem().toString());
-                //System.out.println(championLevel);
 
                 int abilityPoints = Integer.parseInt(Ability1.getSelectedItem().toString()) + Integer.parseInt(Ability2.getSelectedItem().toString()) + Integer.parseInt(Ability3.getSelectedItem().toString()) + Integer.parseInt(Ability4.getSelectedItem().toString());
-                //System.out.println(abilityPoints);
-
 
                 if (championLevel > abilityPoints) {
                     int skillsNotUsed = JOptionPane.showConfirmDialog (LolGUI.this, "You haven't assigned all the skill points.\nWould you still like to generate the info sheet?","WARNING",JOptionPane.YES_NO_OPTION);
 
                     if(skillsNotUsed == JOptionPane.YES_OPTION) {
-                        //GENERATE INFO SHEET
+                        generateInfoSheet();
                     }
                 }
                 else if (championLevel < abilityPoints) {
                     JOptionPane.showMessageDialog(LolGUI.this, "You have assigned too many skill points!");
                 }
                 else {
-                   ChampionInfoSheet.
+                    generateInfoSheet();
+                }
+            }
+        });
+
+        //Set champion level only if champion has been selected/created
+        Level.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (champion != null){
+                    champion.setLevel((int)Level.getSelectedItem());
                 }
             }
         });
     }
+
+
 }
