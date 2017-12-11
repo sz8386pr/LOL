@@ -132,6 +132,7 @@ public class LolGUI extends JFrame {
         }
     }
 
+    //Create Champion class object
     private void createChampion(String championName) {
         try (Connection conn = DriverManager.getConnection(db_url, user, password);
              Statement statement = conn.createStatement()) {
@@ -189,6 +190,7 @@ public class LolGUI extends JFrame {
 
     }
 
+    //Create Ability Class object
     private void createAbility(String abilityName) {
         try (Connection conn = DriverManager.getConnection(db_url, user, password);
              Statement statement = conn.createStatement()) {
@@ -225,6 +227,22 @@ public class LolGUI extends JFrame {
         ChampionInfoTextPane.setText(championInfoSheet.generateInfoSheet(champion, abilitiesList));
     }
 
+    //Set/update champion & ability level values
+    private void setLevels(){
+        //Set champion level
+        if (champion != null){
+            champion.setLevel((int)Level.getSelectedItem());
+        }
+
+        //Set ability levels
+        if (abilitiesList != null) {
+            abilitiesList.get(0).setLevel((int) Ability1.getSelectedItem());
+            abilitiesList.get(1).setLevel((int) Ability2.getSelectedItem());
+            abilitiesList.get(2).setLevel((int) Ability3.getSelectedItem());
+            abilitiesList.get(3).setLevel((int) Ability4.getSelectedItem());
+        }
+    }
+
 
 
     private void addActionListeners(){
@@ -247,6 +265,10 @@ public class LolGUI extends JFrame {
         generateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                //Update/set champion and ability levels before generating info sheet
+                setLevels();
+
                 int championLevel = Integer.parseInt(Level.getSelectedItem().toString());
 
                 int abilityPoints = Integer.parseInt(Ability1.getSelectedItem().toString()) + Integer.parseInt(Ability2.getSelectedItem().toString()) + Integer.parseInt(Ability3.getSelectedItem().toString()) + Integer.parseInt(Ability4.getSelectedItem().toString());
@@ -266,51 +288,6 @@ public class LolGUI extends JFrame {
                 }
             }
 
-        });
-
-        //Set champion level only if champion has been selected/created
-        Level.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (champion != null){
-                    champion.setLevel((int)Level.getSelectedItem());
-                }
-            }
-        });
-
-        //Set the level value to the appropriate Abilities class object in the abilitiesList ArrayList
-        Ability1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (abilitiesList != null) {
-                    abilitiesList.get(0).setLevel((int) Ability1.getSelectedItem());
-                    //System.out.println(abilitiesList.get(0).getLevel());
-                }
-            }
-        });
-        Ability2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (abilitiesList != null) {
-                    abilitiesList.get(1).setLevel((int) Ability2.getSelectedItem());
-                }
-            }
-        });
-        Ability3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (abilitiesList != null) {
-                    abilitiesList.get(2).setLevel((int) Ability3.getSelectedItem());
-                }
-            }
-        });
-        Ability4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (abilitiesList != null) {
-                    abilitiesList.get(3).setLevel((int) Ability4.getSelectedItem());
-                }
-            }
         });
 
     }

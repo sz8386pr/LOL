@@ -15,12 +15,12 @@ public class ChampionInfoSheet {
     private double ability_power = 0;
     private double bonus_attack_damage = 0;
 
-    private ArrayList<String> ability = new ArrayList<>();
-    private ArrayList<Double> ability_ratio = new ArrayList<>();
-    private ArrayList<String> ability_ratio_type = new ArrayList<>();
-    private ArrayList<String> ability_type = new ArrayList<>();
-    private ArrayList<Double> ability_damage = new ArrayList<>();
-    private ArrayList<Double> ability_bonus_damage = new ArrayList<>();
+    private ArrayList<String> ability;
+    private ArrayList<Double> ability_ratio;
+    private ArrayList<String> ability_ratio_type;
+    private ArrayList<String> ability_type;
+    private ArrayList<Double> ability_damage;
+    private ArrayList<Double> ability_bonus_damage;
 
 
     String generateInfoSheet(Champion champion, ArrayList<Abilities> abilitiesList){
@@ -29,14 +29,15 @@ public class ChampionInfoSheet {
         calculateAbilityDamage(abilitiesList);
 
         String championStats = String.format(
-                "   %-20s: %s%n" +
-                        "   %-20s: %d%n" +
-                        "   %-20s: %.0f%n" +
-                        "   %-20s: %.0f%n" +
-                        "   %-20s: %.3f%n" +
-                        "   %-20s: %.0f%n" +
-                        "   %-20s: %.0f%n" +
-                        "   %-20s: %.0f%n%n%n" +
+                        "   %-14s: %s%n" +
+                        "   %-14s: %d%n" +
+                        "   %-14s: %.0f%n" +
+                        "   %-14s: %.0f%n" +
+                        "   %-14s: %.3f/sec%n" +
+                        "   %-14s: %.0f%n" +
+                        "   %-14s: %.0f%n" +
+                        "   %-14s: %.0f%n" +
+                        "   %-14s: %.0f%n%n%n" +
                         "",
                 "CHAMPION NAME", championName,
                 "CHAMPION LEVEL", level,
@@ -45,21 +46,27 @@ public class ChampionInfoSheet {
                 "ATTACK SPEED", attack_speed,
                 "MOVEMENT SPEED", movement_speed,
                 "ARMOR", armor,
-                "MAGIC RESIST", magic_resist);
+                "MAGIC RESIST", magic_resist,
+                "ABILITY POWER", ability_power);
 
-        String abilities = "";
+        StringBuilder abilities = new StringBuilder();
         for (int i = 0; abilitiesList.size() > i; i++) {
 
             //If ability point is 0, consider that ability hasn't been trained yet
             if (abilitiesList.get(i).getLevel() == 0) {
-                abilities += String.format(
-                        "   %-20s: Ability has not been trained yet.%n",
-                       ability.get(i));
+                abilities.append(String.format(
+                        "   %-20s: This ability has not been trained yet.%n",
+                        ability.get(i)));
+            }
+            else if (abilitiesList.get(i).getAbility_ratio() == 0) {
+                abilities.append(String.format(
+                        "   %-20s: This ability has no damage.%n",
+                        ability.get(i)));
             }
             else {
-                abilities += String.format(
+                abilities.append(String.format(
                         "   %-20s: %.0f + (%.0f) %s Damage%n",
-                        ability.get(i), ability_damage.get(i), ability_bonus_damage.get(i), ability_type.get(i));
+                        ability.get(i), ability_damage.get(i), ability_bonus_damage.get(i), ability_type.get(i)));
             }
         }
 
@@ -82,22 +89,29 @@ public class ChampionInfoSheet {
     }
 
     private void calculateAbilityDamage(ArrayList<Abilities> abilitiesList){
+        ability = new ArrayList<>();
+        ability_ratio = new ArrayList<>();
+        ability_ratio_type = new ArrayList<>();
+        ability_type = new ArrayList<>();
+        ability_damage = new ArrayList<>();
+        ability_bonus_damage = new ArrayList<>();
         for (int i = 0; abilitiesList.size() > i; i++) {
-            if (abilitiesList.get(i).getLevel() == 1) {
-                ability_damage.add(i, abilitiesList.get(i).getLv1());
-            } else if (abilitiesList.get(i).getLevel() == 2) {
-                ability_damage.add(i, abilitiesList.get(i).getLv2());
-            } else if (abilitiesList.get(0).getLevel() == 3) {
-                ability_damage.add(i, abilitiesList.get(i).getLv3());
-            } else if (abilitiesList.get(i).getLevel() == 4) {
-                ability_damage.add(i, abilitiesList.get(i).getLv4());
-            } else if (abilitiesList.get(i).getLevel() == 5) {
-                ability_damage.add(i, abilitiesList.get(i).getLv5());
-            }
-
             ability.add(i, abilitiesList.get(i).getAbility_name());
-            //set values only if user has allocated the skill level point towards the spell
-            if (abilitiesList.get(i).getLevel() != 0) {
+            if (abilitiesList.get(i).getAbility_ratio() != 0 && abilitiesList.get(i).getLevel() != 0) {
+                if (abilitiesList.get(i).getLevel() == 1) {
+                    ability_damage.add(i, abilitiesList.get(i).getLv1());
+                } else if (abilitiesList.get(i).getLevel() == 2) {
+                    ability_damage.add(i, abilitiesList.get(i).getLv2());
+                } else if (abilitiesList.get(i).getLevel() == 3) {
+                    ability_damage.add(i, abilitiesList.get(i).getLv3());
+                } else if (abilitiesList.get(i).getLevel() == 4) {
+                    ability_damage.add(i, abilitiesList.get(i).getLv4());
+                } else if (abilitiesList.get(i).getLevel() == 5) {
+                    ability_damage.add(i, abilitiesList.get(i).getLv5());
+                }
+
+                //set values only if user has allocated the skill level point towards the spell
+                //if (abilitiesList.get(i).getLevel() != 0) {
                 ability_ratio.add(i, abilitiesList.get(i).getAbility_ratio());
                 ability_ratio_type.add(i, abilitiesList.get(i).getAbility_ratio_type());
                 ability_type.add(i, abilitiesList.get(i).getAbility_type());
@@ -113,6 +127,14 @@ public class ChampionInfoSheet {
                         ability_bonus_damage.add(i, ability_ratio.get(i) * ability_power);
                         break;
                 }
+
+            }
+            else {
+                ability_damage.add(i, 0.0);
+                ability_ratio.add(i, 0.0);
+                ability_ratio_type.add(i, "");
+                ability_type.add(i, "");
+                ability_bonus_damage.add(i, 0.0);
             }
 
         }
