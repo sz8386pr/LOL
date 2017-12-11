@@ -265,6 +265,7 @@ public class LolGUI extends JFrame {
                     generateInfoSheet();
                 }
             }
+
         });
 
         //Set champion level only if champion has been selected/created
