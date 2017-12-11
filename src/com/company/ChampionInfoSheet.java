@@ -88,6 +88,10 @@ public class ChampionInfoSheet {
         magic_resist = champion.getMagic_resist() + (champion.getMr_level() * (level-1));
     }
 
+    private void calculateItemStats(){
+
+    }
+
     private void calculateAbilityDamage(ArrayList<Abilities> abilitiesList){
         ability = new ArrayList<>();
         ability_ratio = new ArrayList<>();

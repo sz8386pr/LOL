@@ -1,3 +1,5 @@
+//DB access info and DB creation
+
 package com.company;
 
 import java.sql.Connection;
@@ -8,8 +10,8 @@ import java.sql.Statement;
 public class LolDB {
 
     static String db_url = "jdbc:mysql://localhost:3306/lol";
-    static String user = "user";
-    static String password = "itecitec";
+    static String user = "user"; //Should be set as environment variable for security purposes, but used a fixed value for this purposes
+    static String password = "itecitec"; //Should be set as environment variable for security purposes, but used a fixed value for this purposes
 
     // Creates tables and data sets if doesn't exists.
     static void DBSetup()  throws SQLException {
@@ -50,7 +52,21 @@ public class LolDB {
                         "    FOREIGN KEY (`champion_id`)" +
                         "    REFERENCES champions (`champion_id`)" +
                         "    ON DELETE NO ACTION\n" +
-                        "    ON UPDATE NO ACTION)";
+                        "    ON UPDATE NO ACTION )";
+
+        String createItemsTable =
+                "CREATE TABLE IF NOT EXISTS items (" +
+                        "  `item_id` INT(11) NOT NULL AUTO_INCREMENT," +
+                        "  `item_name` VARCHAR(45) NULL DEFAULT NULL," +
+                        "  `bonus_type1` VARCHAR(45) NULL DEFAULT NULL," +
+                        "  `bonus_value1` DOUBLE NULL DEFAULT NULL," +
+                        "  `bonus_type2` VARCHAR(45) NULL DEFAULT NULL," +
+                        "  `bonus_value2` DOUBLE NULL DEFAULT NULL," +
+                        "  `bonus_type3` VARCHAR(45) NULL DEFAULT NULL," +
+                        "  `bonus_value3` DOUBLE NULL DEFAULT NULL," +
+                        "  PRIMARY KEY (`item_id`));\n";
+
+
 
         String insertChampions =
                 "INSERT IGNORE INTO champions (champion_id, name, health, he_level, attack_damage, ad_level, attack_speed, as_level, movement_speed, armor, ar_level, magic_resist, mr_level) VALUES" +
@@ -78,13 +94,43 @@ public class LolDB {
                         "('15', '4', 'Trample', '0.04', 'AP', 'Magic', '10', '12.5', '15', '17.5', '20'),\n" +
                         "('16', '4', 'Unbreakable Will', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
 
+        String insertItems =
+                "INSERT IGNORE INTO items (item_id, item_name, bonus_type1, bonus_value1, bonus_type2, bonus_value2, bonus_type3, bonus_value3) VALUES" +
+                "('1', 'Adaptive Helm', 'Health', 350, 'Magic Resist', 55, NULL, NULL),"+
+                "('2', 'Aegis of the Legion', 'Armor', 30, 'Magic Resist', 30, NULL, NULL),"+
+                "('3', 'Dead Man''s Plate', 'Health', 425, 'Armor', 60, NULL, NULL),"+
+                "('4', 'Forgefire Cape', 'Health', 625, 'Armor', 90, NULL, NULL),"+
+                "('5', 'Frozen Mallet', 'Health', 700, 'Attack Damage', 30, NULL, NULL),"+
+                "('6', 'Infernal Mask', 'Health', 550, 'Magic Resist', 90, NULL, NULL),"+
+                "('7', 'Lich Bane', 'Ability Power', 80, 'Movement Speed', 0.07, NULL, NULL),"+
+                "('8', 'Trinity Force', 'Health', 250, 'Attack Damage', 25, 'Attack Speed', 0.40),"+
+                "('9', 'Wit''s End', 'Attack Speed', 0.40, 'Magic Resist', 40, NULL, NULL),"+
+                "('10', 'Zhonya''s Hourglass', 'Ability Power', 70, 'Armor', 45, NULL, NULL),"+
+                "('11', 'Statikk Shiv', 'Attack Speed', 0.35, 'Movement Speed', 0.05, NULL, NULL),"+
+                "('12', 'Liandry''s Torment', 'Ability Power', 80, 'Health', 300, NULL, NULL),"+
+                "('13', 'Hextech Protobelt-01', 'Health', 300, 'Ability Power', 60, NULL, NULL),"+
+                "('14', 'Ninja Tabi', 'Armor', 30, 'Movement Speed', 45, NULL, NULL),"+
+                "('15', 'Phantom Dancer', 'Attack Speed', 0.45, 'Movement Speed', 0.05, NULL, NULL),"+
+                "('16', 'Boots of Swiftness', 'Movement Speed', 55, NULL, NULL, NULL, NULL),"+
+                "('17', 'Berserker''s Greaves', 'Attack Speed', 0.35, 'Movement Speed', 45, NULL, NULL),"+
+                "('18', 'B. F. Sword', 'Attack Damage', 40, NULL, NULL, NULL, NULL),"+
+                "('19', 'Hextech Gunblade', 'Attack Damage', 40, 'Ability Power', 80, NULL, NULL),"+
+                "('20', 'Thorn Mail', 'Health', 250, 'Armor', 80, NULL, NULL),"+
+                "('21', 'Randuin''s Omen', 'Health', 400, 'Armor', 60, NULL, NULL),"+
+                "('22', 'Guardian Angel', 'Attack Damage', 40, 'Armor', 30, NULL, NULL),"+
+                "('23', 'Maw of Malmortius', 'Attack Damage', 50, 'Magic Resist', 45, NULL, NULL),"+
+                "('24', 'Rylai''s Crystal Scepter', 'Health', 300, 'Ability Power', 75, NULL, NULL);";
+
 
         try (Connection conn = DriverManager.getConnection(db_url, user, password);
              Statement statement = conn.createStatement()) {
             statement.execute(createChampionsTable);
             statement.execute(createAbilitiesTable);
+            statement.execute(createItemsTable);
             statement.executeUpdate(insertChampions);
             statement.executeUpdate(insertAbilities);
+            statement.executeUpdate(insertItems);
+
 
             statement.close();
             conn.close();
