@@ -35,7 +35,6 @@ public class LolGUI extends JFrame {
     private JButton generateButton;
 
     private static final String SELECT_CHAMPION = "Select A Champion";
-    private static final String SELECT_ITEM = "Select An Item";
     private static final String NO_ITEM = "No Item";
 
     private Items items;
@@ -45,9 +44,9 @@ public class LolGUI extends JFrame {
     private ArrayList<String> abilityNameList;
     private ChampionInfoSheet championInfoSheet;
     private ArrayList<Items> itemsList;
+    private ArrayList<String> tooltips;
 
-
-    protected LolGUI(){
+    LolGUI(){
         setTitle("League of Legend Champion Info Sheet");
         setContentPane(mainPanel);
         pack();
@@ -56,6 +55,90 @@ public class LolGUI extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setup();
+
+
+    }
+
+    //Setup item slot tooltips
+    private void setupItemSlotTooltip(){
+
+        //Adding blank tooltips for the no item slot
+        tooltips = new ArrayList<>();
+        tooltips.add("");
+
+        try (Connection conn = DriverManager.getConnection(db_url, user, password);
+             Statement statement = conn.createStatement()) {
+
+            PreparedStatement itemToolTip = conn.prepareStatement("SELECT * FROM items");
+
+            ResultSet rs = itemToolTip.executeQuery();
+
+            //Get bonus type and value data
+            while (rs.next()) {
+                String bonus_type1 = rs.getString("bonus_type1");
+                double bonus_value1 = rs.getDouble("bonus_value1");
+                String bonus_type2 = rs.getString("bonus_type2");
+                double bonus_value2 = rs.getDouble("bonus_value2");
+                String bonus_type3 = rs.getString("bonus_type3");
+                double bonus_value3 = rs.getDouble("bonus_value3");
+
+                //Create string for the Item tool tips
+                StringBuilder toolTip = new StringBuilder();
+
+                //If item value is less than 1, convert and display the value to a percentage value instead
+                if (bonus_value1 > 1) {
+                   toolTip.append(String.format("<HTML>%s: %.0f<BR>", bonus_type1, bonus_value1));
+                }
+                else {
+                   toolTip.append(String.format("<HTML>%s: %.0f%%<BR>", bonus_type1, bonus_value1*100));
+                }
+                //Sometimes items only have a single bonus, append to the toolTip only if item has more than 2 bonuses
+                if (bonus_type2!=null){
+                   if (bonus_value2 > 1) {
+                       toolTip.append(String.format("%s: %.0f<BR>", bonus_type2, bonus_value2));
+                    }
+                   else {
+                       toolTip.append(String.format("%s: %.0f%%<BR>", bonus_type2, bonus_value2*100));
+                    }
+                }
+                //The same idea as for the bonus_type2. Only handful of items have a third bonus
+                if (bonus_type3!=null){
+                    if (bonus_value3 > 1) {
+                        toolTip.append(String.format("%s: %.0f<BR>", bonus_type3, bonus_value3));
+                    }
+                    else {
+                        toolTip.append(String.format("%s: %.0f%%<BR>", bonus_type3, bonus_value3*100));
+                    }
+                }
+
+                //Once tooltip StringBuilder object has been created, add it towards tooltips ArrayList
+                tooltips.add(toolTip.toString());
+            }
+
+            statement.close();
+            conn.close();
+        }
+        catch (SQLException sqle) {
+            sqle.printStackTrace();
+            System.exit(-1);
+        }
+
+        //Create ItemSlotsToolTipRenderer class object
+        ItemSlotsToolTipRenderer renderer = new ItemSlotsToolTipRenderer();
+
+        //setRenderer for the item slots
+        ItemSlot1.setRenderer(renderer);
+        ItemSlot2.setRenderer(renderer);
+        ItemSlot3.setRenderer(renderer);
+        ItemSlot4.setRenderer(renderer);
+        ItemSlot5.setRenderer(renderer);
+        ItemSlot6.setRenderer(renderer);
+
+        //Set tooltip information for the renderer
+        renderer.setTooltips(tooltips);
+
+
+
     }
 
     //Initial setup phase
@@ -64,6 +147,7 @@ public class LolGUI extends JFrame {
         loadItems();
 
         addActionListeners();
+
     }
 
     //Load champions from champions table
@@ -95,25 +179,22 @@ public class LolGUI extends JFrame {
     //Setup item slots
     private void loadItems(){
 
-        ItemSlot1.addItem(SELECT_ITEM);
+        //Initial ItemSlot items
         ItemSlot1.addItem(NO_ITEM);
-        ItemSlot2.addItem(SELECT_ITEM);
         ItemSlot2.addItem(NO_ITEM);
-        ItemSlot3.addItem(SELECT_ITEM);
         ItemSlot3.addItem(NO_ITEM);
-        ItemSlot4.addItem(SELECT_ITEM);
         ItemSlot4.addItem(NO_ITEM);
-        ItemSlot5.addItem(SELECT_ITEM);
         ItemSlot5.addItem(NO_ITEM);
-        ItemSlot6.addItem(SELECT_ITEM);
         ItemSlot6.addItem(NO_ITEM);
 
         try (Connection conn = DriverManager.getConnection(db_url, user, password);
              Statement statement = conn.createStatement()) {
 
-            PreparedStatement items = conn.prepareStatement("SELECT item_name FROM items");
+            PreparedStatement items = conn.prepareStatement("SELECT * FROM items");
 
             ResultSet rs = items.executeQuery();
+
+
 
             while (rs.next()) {
                 String s = rs.getString("item_name");
@@ -123,6 +204,7 @@ public class LolGUI extends JFrame {
                 ItemSlot4.addItem(s);
                 ItemSlot5.addItem(s);
                 ItemSlot6.addItem(s);
+
             }
 
             statement.close();
@@ -132,6 +214,9 @@ public class LolGUI extends JFrame {
             sqle.printStackTrace();
             System.exit(-1);
         }
+
+        //Setup item tooltips
+        setupItemSlotTooltip();
 
 
     }
@@ -299,10 +384,79 @@ public class LolGUI extends JFrame {
         }
     }
 
+    //Create Items class object
+    private void createItems(String itemName){
+        try (Connection conn = DriverManager.getConnection(db_url, user, password);
+             Statement statement = conn.createStatement()) {
+
+            PreparedStatement itemPS = conn.prepareStatement("SELECT * FROM items WHERE item_name = ?");
+            itemPS.setString(1, itemName);
+            ResultSet rs = itemPS.executeQuery();
+
+            //getString from the rs and apply to the String Array abilities.
+            while (rs.next()) {
+                String item_name = rs.getString("item_name");
+                String bonus_type1 = rs.getString("bonus_type1");
+                double bonus_value1 = rs.getDouble("bonus_value1");
+                String bonus_type2 = rs.getString("bonus_type2");
+                double bonus_value2 = rs.getDouble("bonus_value2");
+                String bonus_type3 = rs.getString("bonus_type3");
+                double bonus_value3 = rs.getDouble("bonus_value3");
+
+                items = new Items(item_name, bonus_type1, bonus_value1, bonus_type2, bonus_value2, bonus_type3, bonus_value3);
+            }
+            statement.close();
+            conn.close();
+        }
+        catch (SQLException sqle) {
+            sqle.printStackTrace();
+            System.exit(-1);
+        }
+    }
+
+    //Create Items class object and store them into itemsList ArrayList
+    private void setItems(){
+        itemsList = new ArrayList<>();
+
+        //Only create Items class object and store them into the list if item has been selected
+        if (ItemSlot1.getSelectedItem() != NO_ITEM) {
+            createItems((String)ItemSlot1.getSelectedItem());
+            itemsList.add(items);
+        }
+        if (ItemSlot2.getSelectedItem() != NO_ITEM) {
+            createItems((String)ItemSlot2.getSelectedItem());
+            itemsList.add(items);
+        }
+        if (ItemSlot3.getSelectedItem() != NO_ITEM) {
+            createItems((String)ItemSlot3.getSelectedItem());
+            itemsList.add(items);
+        }
+        if (ItemSlot4.getSelectedItem() != NO_ITEM) {
+            createItems((String)ItemSlot4.getSelectedItem());
+            itemsList.add(items);
+        }
+        if (ItemSlot5.getSelectedItem() != NO_ITEM) {
+            createItems((String)ItemSlot5.getSelectedItem());
+            itemsList.add(items);
+        }
+        if (ItemSlot6.getSelectedItem() != NO_ITEM) {
+            createItems((String)ItemSlot6.getSelectedItem());
+            itemsList.add(items);
+        }
+
+
+    }
+
     private void generateInfoSheet(){
         championInfoSheet = new ChampionInfoSheet();
-        ChampionInfoTextPane.setText(championInfoSheet.generateInfoSheet(champion, abilitiesList));
+        ChampionInfoTextPane.setText(championInfoSheet.generateInfoSheet(champion, abilitiesList, itemsList));
     }
+
+
+
+
+
+
 
 
     private void addActionListeners() {
@@ -322,68 +476,6 @@ public class LolGUI extends JFrame {
             }
         });
 
-        //Item slot header
-        ItemSlot1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Once user selects an item, title is no longer needed
-                if (ItemSlot1.getItemAt(0).equals(SELECT_ITEM)) {
-                    ItemSlot1.removeItemAt(0);
-                }
-            }
-        });
-
-        ItemSlot2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Once user selects an item, title is no longer needed
-                if (ItemSlot2.getItemAt(0).equals(SELECT_ITEM)) {
-                    ItemSlot2.removeItemAt(0);
-                }
-            }
-        });
-
-        ItemSlot3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Once user selects an item, title is no longer needed
-                if (ItemSlot3.getItemAt(0).equals(SELECT_ITEM)) {
-                    ItemSlot3.removeItemAt(0);
-                }
-            }
-        });
-
-        ItemSlot4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Once user selects an item, title is no longer needed
-                if (ItemSlot4.getItemAt(0).equals(SELECT_ITEM)) {
-                    ItemSlot4.removeItemAt(0);
-                }
-            }
-        });
-
-        ItemSlot5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Once user selects an item, title is no longer needed
-                if (ItemSlot5.getItemAt(0).equals(SELECT_ITEM)) {
-                    ItemSlot5.removeItemAt(0);
-                }
-            }
-        });
-
-        ItemSlot6.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Once user selects an item, title is no longer needed
-                if (ItemSlot6.getItemAt(0).equals(SELECT_ITEM)) {
-                    ItemSlot6.removeItemAt(0);
-                }
-            }
-        });
-
-
         // Generate button checks if user have used the correct number of skill points--the same as the champion level. ie. Champion level 6 should be able to use the total skill points of 6.
         generateButton.addActionListener(new ActionListener() {
             @Override
@@ -393,6 +485,8 @@ public class LolGUI extends JFrame {
                 if (ChampionName.getSelectedItem() != SELECT_CHAMPION) {
                     //Update/set champion and ability levels before generating info sheet
                     setLevels();
+                    //Update/set items before generating info sheet
+                    setItems();
 
                     //Variables to check if user have used correct number of skill points/item slots that could be used
                     int championLevel = (Integer) Level.getSelectedItem();
@@ -403,22 +497,22 @@ public class LolGUI extends JFrame {
                     //If an item slot is not equipped with an item, item count is decreased by 1
                     int itemCount = 6;
 
-                    if (ItemSlot1.getSelectedItem() == NO_ITEM || ItemSlot1.getSelectedItem() == SELECT_ITEM) {
+                    if (ItemSlot1.getSelectedItem() == NO_ITEM) {
                         itemCount--;
                     }
-                    if (ItemSlot2.getSelectedItem() == NO_ITEM || ItemSlot2.getSelectedItem() == SELECT_ITEM) {
+                    if (ItemSlot2.getSelectedItem() == NO_ITEM) {
                         itemCount--;
                     }
-                    if (ItemSlot3.getSelectedItem() == NO_ITEM || ItemSlot3.getSelectedItem() == SELECT_ITEM) {
+                    if (ItemSlot3.getSelectedItem() == NO_ITEM) {
                         itemCount--;
                     }
-                    if (ItemSlot4.getSelectedItem() == NO_ITEM || ItemSlot4.getSelectedItem() == SELECT_ITEM) {
+                    if (ItemSlot4.getSelectedItem() == NO_ITEM) {
                         itemCount--;
                     }
-                    if (ItemSlot5.getSelectedItem() == NO_ITEM || ItemSlot5.getSelectedItem() == SELECT_ITEM) {
+                    if (ItemSlot5.getSelectedItem() == NO_ITEM) {
                         itemCount--;
                     }
-                    if (ItemSlot6.getSelectedItem() == NO_ITEM || ItemSlot6.getSelectedItem() == SELECT_ITEM) {
+                    if (ItemSlot6.getSelectedItem() == NO_ITEM) {
                         itemCount--;
                     }
 

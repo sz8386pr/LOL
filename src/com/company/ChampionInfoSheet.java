@@ -13,7 +13,13 @@ public class ChampionInfoSheet {
     private double magic_resist;
     private int level;
     private double ability_power = 0;
+
+    private double bonus_health = 0;
     private double bonus_attack_damage = 0;
+    private double bonus_attack_speed = 0;
+    private double bonus_movement_speed = 0;
+    private double bonus_armor = 0;
+    private double bonus_magic_resist = 0;
 
     private ArrayList<String> ability;
     private ArrayList<Double> ability_ratio;
@@ -23,30 +29,31 @@ public class ChampionInfoSheet {
     private ArrayList<Double> ability_bonus_damage;
 
 
-    String generateInfoSheet(Champion champion, ArrayList<Abilities> abilitiesList){
+    String generateInfoSheet(Champion champion, ArrayList<Abilities> abilitiesList, ArrayList<Items> itemsList){
 
         calculatedChampionStats(champion);
+        calculateItemStats(itemsList);
         calculateAbilityDamage(abilitiesList);
 
         String championStats = String.format(
                         "   %-14s: %s%n" +
                         "   %-14s: %d%n" +
-                        "   %-14s: %.0f%n" +
-                        "   %-14s: %.0f%n" +
-                        "   %-14s: %.3f/sec%n" +
-                        "   %-14s: %.0f%n" +
-                        "   %-14s: %.0f%n" +
-                        "   %-14s: %.0f%n" +
+                        "   %-14s: %.0f(+%.0f) = %.0f%n" +
+                        "   %-14s: %.0f(+%.0f) = %.0f%n" +
+                        "   %-14s: %.3f(+%.3f) = %.3f/sec%n" +
+                        "   %-14s: %.0f(+%.0f) = %.0f%n" +
+                        "   %-14s: %.0f(+%.0f) = %.0f%n" +
+                        "   %-14s: %.0f(+%.0f) = %.0f%n" +
                         "   %-14s: %.0f%n%n%n" +
                         "",
                 "CHAMPION NAME", championName,
                 "CHAMPION LEVEL", level,
-                "HEALTH", health,
-                "ATTACK DAMAGE", attack_damage,
-                "ATTACK SPEED", attack_speed,
-                "MOVEMENT SPEED", movement_speed,
-                "ARMOR", armor,
-                "MAGIC RESIST", magic_resist,
+                "HEALTH", health, bonus_health, health+bonus_health,
+                "ATTACK DAMAGE", attack_damage, bonus_attack_damage, attack_damage+bonus_attack_damage,
+                "ATTACK SPEED", attack_speed, bonus_attack_speed, attack_speed+bonus_attack_speed,
+                "MOVEMENT SPEED", movement_speed, bonus_movement_speed, movement_speed+bonus_movement_speed,
+                "ARMOR", armor, bonus_armor, armor+bonus_armor,
+                "MAGIC RESIST", magic_resist, bonus_magic_resist, magic_resist+bonus_magic_resist,
                 "ABILITY POWER", ability_power);
 
         StringBuilder abilities = new StringBuilder();
@@ -71,8 +78,10 @@ public class ChampionInfoSheet {
         }
 
 
-        return championStats+abilities;}
+        return championStats+abilities;
+    }
 
+    //Calculate base champion stats
     private void calculatedChampionStats(Champion champion) {
 
         championName = champion.getChampionName();
@@ -88,10 +97,49 @@ public class ChampionInfoSheet {
         magic_resist = champion.getMagic_resist() + (champion.getMr_level() * (level-1));
     }
 
-    private void calculateItemStats(){
+    //Calculate bonus stats from items
+    private void calculateItemStats(ArrayList<Items> itemsList){
+        for (Items ItemsList : itemsList) {
+            if (ItemsList.getItems().containsKey("Health")) {
+                bonus_health += ItemsList.getItems().get("Health");
+            }
+            if (ItemsList.getItems().containsKey("Magic Resist")) {
+                bonus_magic_resist += ItemsList.getItems().get("Magic Resist");
+            }
+            if (ItemsList.getItems().containsKey("Armor")) {
+                bonus_armor += ItemsList.getItems().get("Armor");
+            }
+            if (ItemsList.getItems().containsKey("Attack Damage")) {
+                bonus_attack_damage += ItemsList.getItems().get("Attack Damage");
+            }
 
+            //All the champions start with 0 ability power, so no need for bonus variable
+            if (ItemsList.getItems().containsKey("Ability Power")) {
+                ability_power += ItemsList.getItems().get("Ability Power");
+            }
+
+            //attack speed is little different because it is calculated based on the base attack speed (ie: bonus attack speed = 30% * 1.0 = 0.30)
+            if (ItemsList.getItems().containsKey("Attack Speed")) {
+                bonus_attack_speed += (ItemsList.getItems().get("Attack Speed")) * attack_speed;
+            }
+
+            //movement_speed is also different because sometimes it gives a flat movement bonus and sometimes it's percentage boost based on the base movement speed
+            if (ItemsList.getItems().containsKey("Movement Speed")) {
+                //If it gives flat movement speed boost
+                if (ItemsList.getItems().get("Movement Speed") > 1) {
+                    bonus_movement_speed += ItemsList.getItems().get("Movement Speed");
+                }
+                //If it gives percentage movement speed boost
+                else {
+                    bonus_movement_speed += (ItemsList.getItems().get("Movement Speed")) * movement_speed;
+                }
+            }
+
+
+        }
     }
 
+    //Calculate ability damages based on stats
     private void calculateAbilityDamage(ArrayList<Abilities> abilitiesList){
         ability = new ArrayList<>();
         ability_ratio = new ArrayList<>();
