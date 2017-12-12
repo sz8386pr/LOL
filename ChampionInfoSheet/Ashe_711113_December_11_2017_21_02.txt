@@ -1,0 +1,25 @@
+   CHAMPION NAME : Ashe
+
+   CHAMPION LEVEL: 7
+   HEALTH        : 1002(+425) = 1427
+   ATTACK DAMAGE : 79(+0) = 79
+   ATTACK SPEED  : 0.801(+0.000) = 0.801/sec
+   MOVEMENT SPEED: 325(+0) = 325
+   ARMOR         : 50(+120) = 170
+   MAGIC RESIST  : 33(+60) = 93
+   ABILITY POWER : 0
+
+
+   Abilities
+
+   Ranger's Focus      : 0 + (79) Physical Damage
+   Volley              : 20 + (79) Physical Damage
+   Hawkshot            : This ability has no damage.
+   Enchanted Crystal Arrow: 200 + (0) Magic Damage
+
+
+   Items
+
+   Aegis of the Legion      |  30 Armor           |  30 Magic Resist    | 
+   Dead Man's Plate         | 425 Health          |  60 Armor           | 
+   Aegis of the Legion      |  30 Armor           |  30 Magic Resist    | 
