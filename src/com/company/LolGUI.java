@@ -58,7 +58,8 @@ public class LolGUI extends JFrame {
         setContentPane(mainPanel);
         pack();
         setVisible(true);
-        setSize(550, 600);
+        setSize(560, 800);
+        setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setup();

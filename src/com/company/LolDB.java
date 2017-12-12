@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 public class LolDB {
 
-    static String db_url = "jdbc:mysql://localhost:3306/lol";
+    static String db_url = "jdbc:mysql://localhost:3306/lol?autoReconnect=true&useSSL=false";
     static String user = "user"; //Should be set as environment variable for security purposes, but used a fixed value for this purposes
     static String password = "itecitec"; //Should be set as environment variable for security purposes, but used a fixed value for this purposes
 

@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChampionInfoSheet {
 
@@ -48,7 +50,7 @@ public class ChampionInfoSheet {
         calculateAbilityDamage(abilitiesList);
 
         String championStats = String.format(
-                "   %-14s: %s%n" +
+                        "   %-14s: %s%n%n" +
                         "   %-14s: %d%n" +
                         "   %-14s: %.0f(+%.0f) = %.0f%n" +
                         "   %-14s: %.0f(+%.0f) = %.0f%n" +
@@ -69,6 +71,7 @@ public class ChampionInfoSheet {
                 "ABILITY POWER", ability_power);
 
         StringBuilder abilities = new StringBuilder();
+        abilities.append(String.format("   Abilities%n%n"));
         for (int i = 0; abilitiesList.size() > i; i++) {
 
             //If ability point is 0, consider that ability hasn't been trained yet
@@ -76,7 +79,9 @@ public class ChampionInfoSheet {
                 abilities.append(String.format(
                         "   %-20s: This ability has not been trained yet.%n",
                         ability.get(i)));
-            } else if (abilitiesList.get(i).getAbility_ratio() == 0) {
+            }
+            //If ability ratio is 0, this ability does no damage
+            else if (abilitiesList.get(i).getAbility_ratio() == 0) {
                 abilities.append(String.format(
                         "   %-20s: This ability has no damage.%n",
                         ability.get(i)));
@@ -86,8 +91,44 @@ public class ChampionInfoSheet {
                         ability.get(i), ability_damage.get(i), ability_bonus_damage.get(i), ability_type.get(i)));
             }
         }
-        output = championStats + abilities;
 
+        //Equipped items list
+        StringBuilder items = new StringBuilder();
+        items.append(String.format("%n%n   Items%n"));
+
+        //If there are no items selected/equipped, display that no items are equipped
+        if (itemsList.size() == 0) {
+            items.append(String.format("%n   No items are equipped"));
+        }
+        else {
+            for (Items ItemsList : itemsList) {
+                //Display the name of the equipped items
+                String itemName = ItemsList.getItem_name();
+                items.append(String.format("%n   %-25s| ", itemName));
+
+                //Retrieve Bonus type & value pair using the Items class method
+                HashMap<String, Double> bonusSets = ItemsList.getItems();
+                for (Map.Entry<String, Double> entry :bonusSets.entrySet()) {
+                    String bonusType = entry.getKey();
+                    Double bonusValue = entry.getValue();
+                    //If bonusType is null, no need to display
+                    if (bonusType!=null) {
+                        if (bonusValue > 1) {
+                            items.append(String.format("%3.0f %-15s | ", bonusValue, bonusType));
+                        }
+                        //If the bonus value is below 1, convert and display percentage value
+                        else {
+                            items.append(String.format("%3.0f%% %-15s | ", bonusValue * 100, bonusType));
+                        }
+                    }
+                }
+            }
+        }
+
+        //Output consists of champion stats, abilities, and items part
+        output = championStats + abilities + items;
+
+        //If saveToFile CheckBox is checked, save to txt file
         if (saveToFile) {
             saveToFile();
         }
@@ -206,14 +247,15 @@ public class ChampionInfoSheet {
 
     }
 
-    //Save the output
+    //Save the output.
     String saveToFile(){
+        String saveFolder = "ChampionInfoSheet";    //Default output location is ChampionInfoSheet folder
         SimpleDateFormat filenameFormatter = new SimpleDateFormat("MMMM_dd_yyyy_HH_mm");
         Date date = new Date();   //defaults to today, right now
         String formattedDate = filenameFormatter.format(date);
-        String filename = "ChampionInfoSheet"+File.separator+championName+"_"+formattedDate+".txt";
+        String filename = championName+"_"+formattedDate+".txt";  //Default save file name format is Champion name, followed by formatted datetime.txt
 
-        try(PrintWriter out = new PrintWriter(filename)){
+        try(PrintWriter out = new PrintWriter(saveFolder+File.separator+filename)){
             out.println(output);
             return "Saved to " + filename;
         }

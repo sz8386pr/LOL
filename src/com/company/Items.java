@@ -5,7 +5,9 @@
 
 package com.company;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Items {
     private String item_name;
@@ -20,10 +22,9 @@ public class Items {
    }
 
     String getItem_name() { return item_name; }
-
     void setItem_name(String item_name) { this.item_name = item_name; }
 
     HashMap<String, Double> getItems() { return items; }
-
     void setItems(String bonus_value, Double bonus_type) { this.items.put(bonus_value, bonus_type); }
+
 }
