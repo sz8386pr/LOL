@@ -189,8 +189,6 @@ public class ChampionInfoSheet {
                     bonus_movement_speed += (ItemsList.getItems().get("Movement Speed")) * movement_speed;
                 }
             }
-
-
         }
     }
 
