@@ -1,0 +1,16 @@
+   CHAMPION NAME : Ahri
+   CHAMPION LEVEL: 1
+   HEALTH        : 526(+0) = 526
+   ATTACK DAMAGE : 53(+0) = 53
+   ATTACK SPEED  : 0.668(+0.000) = 0.668/sec
+   MOVEMENT SPEED: 330(+0) = 330
+   ARMOR         : 21(+0) = 21
+   MAGIC RESIST  : 30(+0) = 30
+   ABILITY POWER : 0
+
+
+   Orb of Deception    : This ability has not been trained yet.
+   Fox-Fire            : This ability has not been trained yet.
+   Charm               : This ability has not been trained yet.
+   Spirit Rush         : This ability has not been trained yet.
+
