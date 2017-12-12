@@ -1,3 +1,8 @@
+//Items class
+//bonus_type: type of bonus stats (ie. Health)
+//bonus_value: number of bonus
+//Items can have up to 3 different types of bonuses
+
 package com.company;
 
 import java.util.HashMap;

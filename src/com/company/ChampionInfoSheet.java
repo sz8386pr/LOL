@@ -1,3 +1,5 @@
+//Generate, calculate, display, save champion info sheet to a file
+
 package com.company;
 
 import java.io.File;
@@ -9,6 +11,7 @@ import java.util.Date;
 
 public class ChampionInfoSheet {
 
+    //Base stats
     private String championName;
     private double health;
     private double attack_damage;
@@ -19,6 +22,7 @@ public class ChampionInfoSheet {
     private int level;
     private double ability_power = 0;
 
+    //Bonus stats
     private double bonus_health = 0;
     private double bonus_attack_damage = 0;
     private double bonus_attack_speed = 0;
@@ -26,6 +30,7 @@ public class ChampionInfoSheet {
     private double bonus_armor = 0;
     private double bonus_magic_resist = 0;
 
+    //ArrayList to contain ability information
     private ArrayList<String> ability;
     private ArrayList<Double> ability_ratio;
     private ArrayList<String> ability_ratio_type;

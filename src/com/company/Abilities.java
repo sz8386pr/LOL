@@ -1,17 +1,20 @@
+//Abilities class
+//Holds information for an ability
+
 package com.company;
 
 public class Abilities {
-    private String ability_name;
-    private double ability_ratio;
-    private String ability_ratio_type;
-    private String ability_type;
-    private double lv1;
+    private String ability_name;        //Name of an ability
+    private double ability_ratio;       //Ability bonus damage ratio
+    private String ability_ratio_type;  //Type of stats that ability_ratio is affected by
+    private String ability_type;        //Ability damage type
+    private double lv1;                 //Base ability damage per skill level
     private double lv2;
     private double lv3;
     private double lv4;
     private double lv5;
-    private int level;
-    private double bonus_damage;
+    private int level;                  //Number of skill points spent on the ability
+    private double bonus_damage;        //Value for the bonus ability damage calculated by the ability ratio
 
     public Abilities(String ability_name, double ability_ratio, String ability_ratio_type, String ability_type, double lv1, double lv2, double lv3, double lv4, double lv5){
 

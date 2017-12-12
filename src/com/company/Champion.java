@@ -2,11 +2,11 @@ package com.company;
 
 public class Champion {
 
-    private String championName;
-    private double health;
-    private double he_level;
-    private double attack_damage;
-    private double ad_level;
+    private String championName;        //Name of the champion
+    private double health;              //Health value
+    private double he_level;            //Health increased per level
+    private double attack_damage;       //Attack Damage
+    private double ad_level;            //Attack Damage increased per level
     private double attack_speed;
     private double as_level;
     private double movement_speed;
@@ -14,8 +14,8 @@ public class Champion {
     private double ar_level;
     private double magic_resist;
     private double mr_level;
-    private int level;
-    private double ability_power = 0;
+    private int level;                  //Champion level 1-18
+    private double ability_power = 0;   //All champions have default/starting ability power of 0
 
     public Champion(String championName, double health, double he_level, double attack_damage, double ad_level, double attack_speed, double as_level,
                     double movement_speed, double armor, double ar_level, double magic_resist, double mr_level, int level) {

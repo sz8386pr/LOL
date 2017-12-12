@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import static com.company.LolDB.*;
 
 public class LolGUI extends JFrame {
+
+    //GUI objects
     private JPanel mainPanel;
 
     private JComboBox<String> ChampionName;
@@ -31,19 +33,22 @@ public class LolGUI extends JFrame {
     private JComboBox<String> ItemSlot6;
 
     private JTextPane ChampionInfoTextPane;
-
     private JButton generateButton;
     private JCheckBox saveCheckBox;
 
+
+    //String values. Used for ComboBoxes
     private static final String SELECT_CHAMPION = "Select A Champion";
     private static final String NO_ITEM = "No Item";
 
+    //Class objects
     private Items items;
     private Champion champion;
     private Abilities ability;
+
+    //ArrayLists used to pass onto ChampionInfoSheet
     private ArrayList<Abilities> abilitiesList;
     private ArrayList<String> abilityNameList;
-    private ChampionInfoSheet championInfoSheet;
     private ArrayList<Items> itemsList;
     private ArrayList<String> tooltips;
     private boolean saveToFile = false;
@@ -465,7 +470,7 @@ public class LolGUI extends JFrame {
     //
 
     private void generateInfoSheet(){
-        championInfoSheet = new ChampionInfoSheet();
+        ChampionInfoSheet championInfoSheet = new ChampionInfoSheet();
         ChampionInfoTextPane.setText(championInfoSheet.generateInfoSheet(champion, abilitiesList, itemsList, saveToFile));
         if (saveToFile) {
             String saveMessage = championInfoSheet.saveToFile();
