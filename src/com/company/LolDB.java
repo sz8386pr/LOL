@@ -73,7 +73,11 @@ public class LolDB {
                         "('1', 'Aatrox', '580', '85', '68', '3.2', '0.651', '1.03', '345', '33', '3.8', '32.1', '1.25')," +
                         "('2', 'Ahri', '526', '92', '53.04', '3', '0.668', '1.02', '330', '20.88', '3.5', '30', '0.5')," +
                         "('3', 'Akali', '593', '90', '58.376', '3.2', '0.694', '1.031', '350', '31.38', '3.5', '32.1', '1.25')," +
-                        "('4', 'Alistar', '613.36', '106', '61.1116', '3.62', '0.625', '1.02125', '330', '44', '3.5', '32.1', '1.25');";
+                        "('4', 'Alistar', '613.36', '106', '61.1116', '3.62', '0.625', '1.02125', '330', '44', '3.5', '32.1', '1.25')," +
+                        "('5', 'Amumu', '613.12', '84', '53.38', '3.8', '0.638', '1.0218', '335', '33', '3.8', '32.1', '1.25')," +
+                        "('6', 'Anivia', '480', '82', '51.376', '3.2', '0.625', '1.0168', '325', '21.22', '4', '30', '0.5')," +
+                        "('7', 'Annie', '524', '88', '50.41', '2.625', '0.579', '1.0136', '335', '19.22', '4', '30', '0.5')," +
+                        "('8', 'Ashe', '527.72', '79', '65', '2.26', '0.658', '1.0333', '325', '30', '3.4', '30', '0.5');";
 
         String insertAbilities =
                 "INSERT IGNORE INTO abilities (ability_id, champion_id, ability_name, ability_ratio, ability_ratio_type, ability_type, lv1, lv2, lv3, lv4, lv5) VALUES" +
@@ -92,7 +96,23 @@ public class LolDB {
                         "('13', '4', 'Pulverize', '0.5', 'AP', 'Magic', '60', '105', '150', '195', '240'),\n" +
                         "('14', '4', 'Headbutt', '0.7', 'AP', 'Magic', '55', '110', '165', '220', '275'),\n" +
                         "('15', '4', 'Trample', '0.04', 'AP', 'Magic', '10', '12.5', '15', '17.5', '20'),\n" +
-                        "('16', '4', 'Unbreakable Will', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL);";
+                        "('16', '4', 'Unbreakable Will', 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL),\n" +
+                        "('17', '5', 'Bandage Toss', '0.7', 'AP', 'Magic', '80', '130', '180', '230', '280'),\n" +
+                        "('18', '5', 'Despair', '0.01', 'AP', 'Magic', '10', '15', '20', '25', '30'),\n" +
+                        "('19', '5', 'Tantrum', '0.50', 'AP', 'Magic', '75', '100', '125', '150', '175'),\n" +
+                        "('20', '5', 'Curse of the Sad Mummy', '0.8', 'AP', 'Magic', '150', '250', '350', NULL, NULL),\n" +
+                        "('21', '6', 'Flash Frost', '0.8', 'AP', 'Magic', '120', '170', '220', '270', '320'),\n" +
+                        "('22', '6', 'Crystallize', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL),\n" +
+                        "('23', '6', 'Frostbite', '0.5', 'AP', 'Magic', '50', '75', '100', '125', '150'),\n" +
+                        "('24', '6', 'Glacial Storm', '0.13', 'AP', 'Magic', '40', '60', '80', NULL, NULL),\n" +
+                        "('25', '7', 'Disintegrate', '0.8', 'AP', 'Magic', '80', '115', '150', '185', '220'),\n" +
+                        "('26', '7', 'Incinerate', '0.85', 'AP', 'Magic', '70', '115', '160', '205', '250'),\n" +
+                        "('27', '7', 'Molten Shield', '0.2', 'AP', 'Magic', '20', '30', '40', '50', '60'),\n" +
+                        "('28', '7', 'Summon: Tibbers', '0.65', 'AP', 'Magic', '150', '275', '400', NULL, NULL),\n" +
+                        "('29', '8', 'Ranger''s Focus', '1', 'Total AD', 'Physical', '0', '0', '0', '0', '0'),\n" +
+                        "('30', '8', 'Volley', '1', 'Total AD', 'Physical', '20', '35', '50', '65', '80'),\n" +
+                        "('31', '8', 'Hawkshot', '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL),\n" +
+                        "('32', '8', 'Enchanted Crystal Arrow', '1.0', 'AP', 'Magic', '200', '400', '600', NULL, NULL);";
 
         String insertItems =
                 "INSERT IGNORE INTO items (item_id, item_name, bonus_type1, bonus_value1, bonus_type2, bonus_value2, bonus_type3, bonus_value3) VALUES" +

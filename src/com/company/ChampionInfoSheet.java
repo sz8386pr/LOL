@@ -1,6 +1,11 @@
 package com.company;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChampionInfoSheet {
 
@@ -28,15 +33,17 @@ public class ChampionInfoSheet {
     private ArrayList<Double> ability_damage;
     private ArrayList<Double> ability_bonus_damage;
 
+    private String output;
 
-    String generateInfoSheet(Champion champion, ArrayList<Abilities> abilitiesList, ArrayList<Items> itemsList){
+
+    String generateInfoSheet(Champion champion, ArrayList<Abilities> abilitiesList, ArrayList<Items> itemsList, Boolean saveToFile){
 
         calculatedChampionStats(champion);
         calculateItemStats(itemsList);
         calculateAbilityDamage(abilitiesList);
 
         String championStats = String.format(
-                        "   %-14s: %s%n" +
+                "   %-14s: %s%n" +
                         "   %-14s: %d%n" +
                         "   %-14s: %.0f(+%.0f) = %.0f%n" +
                         "   %-14s: %.0f(+%.0f) = %.0f%n" +
@@ -48,12 +55,12 @@ public class ChampionInfoSheet {
                         "",
                 "CHAMPION NAME", championName,
                 "CHAMPION LEVEL", level,
-                "HEALTH", health, bonus_health, health+bonus_health,
-                "ATTACK DAMAGE", attack_damage, bonus_attack_damage, attack_damage+bonus_attack_damage,
-                "ATTACK SPEED", attack_speed, bonus_attack_speed, attack_speed+bonus_attack_speed,
-                "MOVEMENT SPEED", movement_speed, bonus_movement_speed, movement_speed+bonus_movement_speed,
-                "ARMOR", armor, bonus_armor, armor+bonus_armor,
-                "MAGIC RESIST", magic_resist, bonus_magic_resist, magic_resist+bonus_magic_resist,
+                "HEALTH", health, bonus_health, health + bonus_health,
+                "ATTACK DAMAGE", attack_damage, bonus_attack_damage, attack_damage + bonus_attack_damage,
+                "ATTACK SPEED", attack_speed, bonus_attack_speed, attack_speed + bonus_attack_speed,
+                "MOVEMENT SPEED", movement_speed, bonus_movement_speed, movement_speed + bonus_movement_speed,
+                "ARMOR", armor, bonus_armor, armor + bonus_armor,
+                "MAGIC RESIST", magic_resist, bonus_magic_resist, magic_resist + bonus_magic_resist,
                 "ABILITY POWER", ability_power);
 
         StringBuilder abilities = new StringBuilder();
@@ -64,21 +71,22 @@ public class ChampionInfoSheet {
                 abilities.append(String.format(
                         "   %-20s: This ability has not been trained yet.%n",
                         ability.get(i)));
-            }
-            else if (abilitiesList.get(i).getAbility_ratio() == 0) {
+            } else if (abilitiesList.get(i).getAbility_ratio() == 0) {
                 abilities.append(String.format(
                         "   %-20s: This ability has no damage.%n",
                         ability.get(i)));
-            }
-            else {
+            } else {
                 abilities.append(String.format(
                         "   %-20s: %.0f + (%.0f) %s Damage%n",
                         ability.get(i), ability_damage.get(i), ability_bonus_damage.get(i), ability_type.get(i)));
             }
         }
+        output = championStats + abilities;
 
-
-        return championStats+abilities;
+        if (saveToFile) {
+            saveToFile();
+        }
+        return output;
     }
 
     //Calculate base champion stats
@@ -191,5 +199,22 @@ public class ChampionInfoSheet {
 
         }
 
+    }
+
+    //Save the output
+    String saveToFile(){
+        SimpleDateFormat filenameFormatter = new SimpleDateFormat("MMMM_dd_yyyy_HH_mm");
+        Date date = new Date();   //defaults to today, right now
+        String formattedDate = filenameFormatter.format(date);
+        String filename = "ChampionInfoSheet"+File.separator+championName+"_"+formattedDate+".txt";
+
+        try(PrintWriter out = new PrintWriter(filename)){
+            out.println(output);
+            return "Saved to " + filename;
+        }
+        catch (FileNotFoundException fnfe){
+            fnfe.printStackTrace();
+            return "Error saving to a file";
+        }
     }
 }
