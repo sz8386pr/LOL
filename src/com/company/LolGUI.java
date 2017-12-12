@@ -67,7 +67,6 @@ public class LolGUI extends JFrame {
     //Initial setup phase
     private void setup(){
         loadChampions();
-        loadItems();
         addActionListeners();
 
     }
@@ -492,10 +491,12 @@ public class LolGUI extends JFrame {
                 // Sets default value for the ChampionName JComboBox to SELECT_CHAMPION and removes it once user selects a champion and title is no longer needed.
                 if (ChampionName.getItemAt(0).equals(SELECT_CHAMPION)) {
                     ChampionName.removeItemAt(0);
+                    loadItems();
                 }
 
                 String championName = (String) ChampionName.getSelectedItem();
                 setupChampion(championName);
+
             }
         });
 

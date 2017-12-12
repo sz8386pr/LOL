@@ -17,6 +17,6 @@ Open files for more information
         -Items: Items class file
         -ItemSlotsToolTipRenderer: Custom ListCellRenderer for Item slot tooltips
         -LolDB: Lol DB access information and create DB if not available
-        -LolProgram: Application
+        -LolProgram: Running Application
         -LolGUI
             -LolGUI: Main codes

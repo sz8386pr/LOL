@@ -45,7 +45,6 @@ public class LolDB {
                         "  `lv3` DOUBLE NULL DEFAULT NULL," +
                         "  `lv4` DOUBLE NULL DEFAULT NULL," +
                         "  `lv5` DOUBLE NULL DEFAULT NULL," +
-                        "  `lv6` DOUBLE NULL DEFAULT NULL," +
                         "  PRIMARY KEY (`ability_id`)," +
                         "  INDEX `chapion_id_idx` (`champion_id` ASC)," +
                         "  CONSTRAINT `chapion_id`" +
