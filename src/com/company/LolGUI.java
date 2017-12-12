@@ -473,7 +473,7 @@ public class LolGUI extends JFrame {
         ChampionInfoSheet championInfoSheet = new ChampionInfoSheet();
         ChampionInfoTextPane.setText(championInfoSheet.generateInfoSheet(champion, abilitiesList, itemsList, saveToFile));
         if (saveToFile) {
-            String saveMessage = championInfoSheet.saveToFile();
+            String saveMessage = championInfoSheet.saveToFile(itemsList);
             JOptionPane.showMessageDialog(LolGUI.this, saveMessage);
         }
     }

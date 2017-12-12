@@ -39,6 +39,7 @@ public class ChampionInfoSheet {
     private ArrayList<String> ability_type;
     private ArrayList<Double> ability_damage;
     private ArrayList<Double> ability_bonus_damage;
+    private ArrayList<Integer> ability_level;
 
     private String output;
 
@@ -130,7 +131,7 @@ public class ChampionInfoSheet {
 
         //If saveToFile CheckBox is checked, save to txt file
         if (saveToFile) {
-            saveToFile();
+            saveToFile(itemsList);
         }
         return output;
     }
@@ -201,18 +202,20 @@ public class ChampionInfoSheet {
         ability_type = new ArrayList<>();
         ability_damage = new ArrayList<>();
         ability_bonus_damage = new ArrayList<>();
+        ability_level = new ArrayList<>();
         for (int i = 0; abilitiesList.size() > i; i++) {
             ability.add(i, abilitiesList.get(i).getAbility_name());
-            if (abilitiesList.get(i).getAbility_ratio() != 0 && abilitiesList.get(i).getLevel() != 0) {
-                if (abilitiesList.get(i).getLevel() == 1) {
+            ability_level.add(i, abilitiesList.get(i).getLevel());
+            if (abilitiesList.get(i).getAbility_ratio() != 0 && ability_level.get(i) != 0) {
+                if (ability_level.get(i) == 1) {
                     ability_damage.add(i, abilitiesList.get(i).getLv1());
-                } else if (abilitiesList.get(i).getLevel() == 2) {
+                } else if (ability_level.get(i) == 2) {
                     ability_damage.add(i, abilitiesList.get(i).getLv2());
-                } else if (abilitiesList.get(i).getLevel() == 3) {
+                } else if (ability_level.get(i) == 3) {
                     ability_damage.add(i, abilitiesList.get(i).getLv3());
-                } else if (abilitiesList.get(i).getLevel() == 4) {
+                } else if (ability_level.get(i) == 4) {
                     ability_damage.add(i, abilitiesList.get(i).getLv4());
-                } else if (abilitiesList.get(i).getLevel() == 5) {
+                } else if (ability_level.get(i) == 5) {
                     ability_damage.add(i, abilitiesList.get(i).getLv5());
                 }
 
@@ -248,12 +251,13 @@ public class ChampionInfoSheet {
     }
 
     //Save the output.
-    String saveToFile(){
+    String saveToFile(ArrayList<Items> itemsList){
         String saveFolder = "ChampionInfoSheet";    //Default output location is ChampionInfoSheet folder
         SimpleDateFormat filenameFormatter = new SimpleDateFormat("MMMM_dd_yyyy_HH_mm");
         Date date = new Date();   //defaults to today, right now
         String formattedDate = filenameFormatter.format(date);
-        String filename = championName+"_"+formattedDate+".txt";  //Default save file name format is Champion name, followed by formatted datetime.txt
+        //Default filename format is ChampionName_(ChampionLevel)(4SkillLevels)(NumberOfEquippedItems)_formattedDate.txt. Just for fun and easier to distinguish champion sheet by the file name
+        String filename = String.format("%s_%d%d%d%d%d%d_%18s.txt", championName, level, ability_level.get(0),ability_level.get(1),ability_level.get(2),ability_level.get(3), itemsList.size(), formattedDate);
 
         try(PrintWriter out = new PrintWriter(saveFolder+File.separator+filename)){
             out.println(output);
